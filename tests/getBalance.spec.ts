@@ -1,4 +1,4 @@
-import { getBalance } from "..";
+import { getBalance } from "../getBalance";
 
 describe("Defi Balance()", () => {
   it("should throw an error for an empty address", async () => {

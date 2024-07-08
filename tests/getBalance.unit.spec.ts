@@ -1,4 +1,4 @@
-import { alephiumBody, getBalance } from "..";
+import { alephiumBody, getBalance } from "../getBalance";
 
 beforeEach(() => {
   const mockResponse: alephiumBody = {
@@ -28,7 +28,7 @@ describe("Defi Balance()", () => {
     expect(balance).toEqual(new Error("Provide a valid address"));
   });
 
-  it("should return 0 defi balance", async () => {
+  it("should return 1 defi balance", async () => {
     //arrange
     const address = "1DrDyTr9RpRsQnDnXo2YRiPzPW4ooHX5LLoqXrqfMrpQH";
 
