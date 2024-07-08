@@ -1,4 +1,20 @@
-import { getBalance } from "..";
+import { alephiumBody, getBalance } from "..";
+
+beforeEach(() => {
+  const mockResponse: alephiumBody = {
+    balance: "1",
+    balanceHint: "1 ALPH",
+    lockedBalance: "1",
+    lockedBalanceHint: "1 ALPH",
+    utxoNum: 0,
+  };
+
+  global.fetch = jest.fn(() =>
+    Promise.resolve({
+      json: () => Promise.resolve(mockResponse),
+    })
+  ) as jest.Mock;
+});
 
 describe("Defi Balance()", () => {
   it("should throw an error for an empty address", async () => {
@@ -20,6 +36,6 @@ describe("Defi Balance()", () => {
     const balance = await getBalance(address);
 
     // assert
-    expect(balance).toEqual("0");
+    expect(balance).toEqual("1");
   });
 });
