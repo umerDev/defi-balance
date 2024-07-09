@@ -1,3 +1,3 @@
-3 different project
+2 projects
 
-go, typescript and react app show an alephium balance
+go and typescript apps show an alephium balance
