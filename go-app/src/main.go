@@ -10,7 +10,6 @@ import (
 
 func main() {
 	address := strings.Join(os.Args[1:], "")
-	fmt.Println(address)
 	alephiumBalance := balance.GetBalance(address)
 	fmt.Println("alephieum balance: ", alephiumBalance)
 }
