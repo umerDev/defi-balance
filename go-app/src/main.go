@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"strings"
 
@@ -10,6 +11,10 @@ import (
 
 func main() {
 	address := strings.Join(os.Args[1:], "")
-	alephiumBalance := balance.GetBalance(address)
+	alephiumBalance, err := balance.GetBalance(address, balance.CreateUrl)
+
+	if err != nil {
+		log.Fatal("unable to get balance", err)
+	}
 	fmt.Println("alephieum balance: ", alephiumBalance)
 }

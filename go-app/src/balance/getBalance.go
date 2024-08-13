@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"log"
 	"net/http"
 )
 
@@ -16,27 +15,35 @@ type alephiumBody struct {
 	UtxoNum           int    `json:"utxoNum"`
 }
 
-func createUrl(address string) string {
+type URLGenerator func(address string) string
+
+func CreateUrl(address string) string {
 	url := fmt.Sprintf("https://wallet.mainnet.alephium.org/addresses/%s/balance", address)
 	return url
 }
 
-func GetBalance(address string) string {
-	url := createUrl(address)
+func GetBalance(address string, generateURL URLGenerator) (string, error) {
+	url := generateURL(address)
 
 	resp, err := http.Get(url)
 	if err != nil {
-		log.Fatalln(err)
+		return "", fmt.Errorf("failed to make HTTP request: %w", err)
 	}
 	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return "", fmt.Errorf("received non-200 HTTP status: %s", resp.Status)
+	}
+
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
-		log.Fatalln(err)
+		return "", fmt.Errorf("failed to read response body: %w", err)
 	}
 
 	var result alephiumBody
 	if err := json.Unmarshal(body, &result); err != nil {
-		fmt.Println("unable to marshal json")
+		return "", fmt.Errorf("failed to unmarshal JSON: %w", err)
 	}
-	return result.Balance
+
+	return result.BalanceHint, nil
 }
