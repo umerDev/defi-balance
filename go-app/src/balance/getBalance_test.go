@@ -11,10 +11,7 @@ import (
 func TestGetBalance_Success(t *testing.T) {
 	// Mock response
 	mockResponse := `{"balance":"1000","balanceHint":"1000","lockedBalance":"500","lockedBalanceHint":"500","utxoNum":1}`
-	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.WriteHeader(http.StatusOK)
-		w.Write([]byte(mockResponse))
-	}))
+	server := createTestServer(mockResponse)
 	defer server.Close()
 
 	address := "testAddress"
@@ -60,10 +57,7 @@ func TestGetBalance_HttpError(t *testing.T) {
 func TestGetBalance_UnmarshalError(t *testing.T) {
 	// Mock response with invalid JSON
 	mockResponse := `{"balance":1000,"balanceHint":1000` // Invalid JSON
-	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.WriteHeader(http.StatusOK)
-		w.Write([]byte(mockResponse))
-	}))
+	server := createTestServer(mockResponse)
 	defer server.Close()
 
 	address := "testAddress"
@@ -104,4 +98,11 @@ func containsErrorMessage(err error, expectedMessage string) bool {
 		return false
 	}
 	return strings.Contains(err.Error(), expectedMessage)
+}
+
+func createTestServer(mockResponse string) *httptest.Server {
+	return httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte(mockResponse))
+	}))
 }
