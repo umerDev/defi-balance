@@ -1,17 +1,15 @@
 package balance
 
 import (
-	"fmt"
 	"testing"
 )
 
-func Test_GetBalance(t *testing.T) {
-	address := "1DrDyTr9RpRsQnDnXo2YRiPzPW4ooHX5LLoqXrqfMrpQH"
+func TestCreateUrl(t *testing.T) {
+	address := "testAddress"
+	expectedUrl := "https://wallet.mainnet.alephium.org/addresses/testAddress/balance"
+	actualUrl := createUrl(address)
 
-	alephiumBalance := GetBalance(address)
-
-	if alephiumBalance != "0" {
-		t.Error("Unexpected balance amount")
+	if actualUrl != expectedUrl {
+		t.Errorf("Expected URL %s but got %s", expectedUrl, actualUrl)
 	}
-	fmt.Println("balance is: ", alephiumBalance)
 }

@@ -12,6 +12,7 @@ beforeEach(() => {
   global.fetch = jest.fn(() =>
     Promise.resolve({
       json: () => Promise.resolve(mockResponse),
+      status: 200,
     })
   ) as jest.Mock;
 });
